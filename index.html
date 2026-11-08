@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#f6f8f4">
+<meta name="description" content="赋新户外 · 户外服饰款式展示：春秋厚款 87 款、夏季薄款 54 款，按款号、花色快速检索，支持放大看图与到店看样。">
+<title>赋新户外 · 户外服饰款式展示</title>
+<style>
+:root{
+  --bg:#f6f8f4; --surface:#ffffff; --ink:#22312a; --ink2:#5d6c62; --ink3:#8a978d;
+  --line:#e4ebe2; --line2:#eef2eb; --brand:#2f5d46; --brand2:#7ea86a; --accent:#d8a44f;
+  --nav-h:68px; --tool-h:64px;
+  --shadow:0 1px 2px rgba(28,54,36,.04),0 10px 28px rgba(28,54,36,.055);
+  --radius:12px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{
+  margin:0;background:var(--bg);color:var(--ink);
+  font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei","Noto Sans CJK SC","Hiragino Sans GB",sans-serif;
+  font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased;
+}
+img{display:block;max-width:100%}
+button,input{font:inherit;color:inherit}
+button{cursor:pointer;border:0;background:none}
+a{color:inherit;text-decoration:none}
+[hidden]{display:none !important}
+:focus-visible{outline:2px solid var(--brand2);outline-offset:3px;border-radius:4px}
+.wrap{max-width:1400px;margin:0 auto;padding:0 32px}
+
+/* ---------- 顶部固定导航 ---------- */
+.topbar{
+  position:fixed;top:0;left:0;right:0;height:var(--nav-h);z-index:60;
+  background:#fff;
+  border-bottom:1px solid var(--line);
+}
+.bar-inner{height:100%;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:20px}
+.brand{display:flex;align-items:center;gap:11px;justify-self:start;min-width:0}
+.brand svg{flex:0 0 auto}
+.brand-txt{display:flex;flex-direction:column;line-height:1.25;min-width:0}
+.brand-txt b{font-size:19px;letter-spacing:.06em;font-weight:700;white-space:nowrap}
+.brand-txt small{font-size:10.5px;color:var(--ink3);letter-spacing:.12em;white-space:nowrap}
+.nav{display:flex;align-items:center;gap:2px;justify-self:center}
+.nav a{
+  position:relative;padding:9px 12px;border-radius:8px;font-size:13.5px;color:var(--ink2);
+  white-space:nowrap;
+}
+.nav a:hover{color:var(--brand);background:#f0f5ee}
+.nav a.active{color:var(--brand);font-weight:600;background:#eaf2e7}
+.nav a.active::after{
+  content:"";position:absolute;left:50%;bottom:2px;transform:translateX(-50%);
+  width:14px;height:2px;border-radius:2px;background:var(--brand2);
+}
+.today{justify-self:end;text-align:right;line-height:1.3;white-space:nowrap}
+.today .d-label{display:block;font-size:10px;color:var(--ink3);letter-spacing:.16em}
+.today .d-main{display:block;font-size:13.5px;font-weight:600;font-variant-numeric:tabular-nums}
+.today .d-week{display:block;font-size:11px;color:var(--ink2)}
+.nav-toggle{display:none;width:38px;height:38px;border:1px solid var(--line);border-radius:9px;align-items:center;justify-content:center}
+.nav-toggle span{display:block;width:18px;height:2px;background:var(--brand);position:relative}
+.nav-toggle span::before,.nav-toggle span::after{content:"";position:absolute;left:0;width:18px;height:2px;background:var(--brand)}
+.nav-toggle span::before{top:-6px}.nav-toggle span::after{top:6px}
+.nav-toggle[aria-expanded="true"] span{background:transparent}
+.nav-toggle[aria-expanded="true"] span::before{top:0;transform:rotate(45deg)}
+.nav-toggle[aria-expanded="true"] span::after{top:0;transform:rotate(-45deg)}
+
+/* ---------- 简介 ---------- */
+main{padding-top:var(--nav-h)}
+.intro{background:linear-gradient(180deg,#eef4ea 0%,#f6f8f4 100%);border-bottom:1px solid var(--line)}
+.intro-inner{display:flex;align-items:flex-end;justify-content:space-between;gap:32px;padding-top:44px;padding-bottom:38px}
+.eyebrow{margin:0 0 10px;font-size:11px;letter-spacing:.24em;color:var(--brand2);font-weight:700}
+.intro h1{margin:0 0 10px;font-size:32px;line-height:1.25;letter-spacing:.02em;font-weight:700}
+.intro .lead{margin:0;max-width:620px;color:var(--ink2);font-size:14px}
+.intro .lead-contact{max-width:760px;font-size:14.5px}
+.intro .lead .ph{color:#a8813f;font-weight:500}
+.stats{display:flex;gap:10px;flex:0 0 auto}
+.stat{min-width:112px;padding:12px 16px;background:rgba(255,255,255,.8);border:1px solid var(--line);border-radius:10px}
+.stat b{display:block;font-size:24px;line-height:1.2;color:var(--brand);font-variant-numeric:tabular-nums}
+.stat span{font-size:11px;color:var(--ink2)}
+
+/* ---------- 检索工具条 ---------- */
+.toolbar{
+  position:sticky;top:var(--nav-h);z-index:40;height:var(--tool-h);
+  background:#fff;
+  border-bottom:1px solid var(--line);
+}
+.toolbar-inner{height:100%;display:flex;align-items:center;gap:16px}
+.search{
+  display:flex;align-items:center;gap:9px;flex:0 1 420px;height:40px;padding:0 12px;
+  background:#f4f7f2;border:1px solid var(--line);border-radius:9px;
+}
+.search:focus-within{border-color:var(--brand2);background:#fff}
+.search svg{flex:0 0 auto;color:var(--ink3)}
+.search input{flex:1;min-width:0;border:0;background:transparent;outline:0;font-size:13.5px}
+.search input::placeholder{color:var(--ink3)}
+.search .clear{font-size:12px;color:var(--ink3);padding:4px 6px;border-radius:5px}
+.search .clear:hover{color:var(--brand);background:#e9f0e5}
+.result{font-size:12.5px;color:var(--ink2);white-space:nowrap;font-variant-numeric:tabular-nums}
+.chips{display:flex;align-items:center;gap:6px;margin-left:auto;overflow-x:auto;scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.chips .chip-label{font-size:11px;color:var(--ink3);white-space:nowrap;margin-right:2px}
+.chips button{
+  padding:5px 11px;border:1px solid var(--line);border-radius:20px;background:#fff;
+  font-size:12px;color:var(--ink2);white-space:nowrap;
+}
+.chips button:hover{border-color:var(--brand2);color:var(--brand);background:#f1f6ee}
+.chips button.on{background:var(--brand);border-color:var(--brand);color:#fff}
+
+/* ---------- 品类分区 ---------- */
+.sec{padding:44px 0 8px;scroll-margin-top:calc(var(--nav-h) + var(--tool-h) + 14px)}
+.sec-head{margin-bottom:20px}
+.sec-kicker{display:flex;align-items:center;gap:9px;font-size:11.5px;color:var(--brand2);font-weight:700;letter-spacing:.1em}
+.sec-kicker::before{content:"";width:18px;height:2px;background:var(--brand2);border-radius:2px}
+.sec-title-row{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;margin-top:5px}
+.sec h2{margin:0;font-size:23px;font-weight:700;letter-spacing:.02em}
+.sec-range{font-size:12px;color:var(--ink3);font-variant-numeric:tabular-nums}
+.sec-count{margin-left:auto;font-size:12px;color:var(--ink2);white-space:nowrap}
+.sec-count b{font-size:15px;color:var(--brand);font-weight:700}
+.sec-note{margin:8px 0 0;font-size:12.5px;color:var(--ink2);max-width:900px;line-height:1.75}
+
+.grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:16px}
+.card{
+  background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
+  overflow:hidden;display:flex;flex-direction:column;
+}
+.card .media{
+  position:relative;display:block;width:100%;aspect-ratio:1/1;background:#fbfcfa;
+  border-bottom:1px solid var(--line2);padding:0;overflow:hidden;cursor:zoom-in;
+}
+.card .media img{width:100%;height:100%;object-fit:contain}
+.card .meta{padding:9px 11px 11px;display:flex;flex-direction:column;gap:4px;min-height:66px}
+.meta-top{display:flex;align-items:center;gap:6px}
+.code{
+  font-size:11px;font-weight:700;letter-spacing:.03em;color:var(--brand);
+  background:#eaf2e7;padding:1px 7px;border-radius:5px;font-variant-numeric:tabular-nums;
+}
+.code.none{color:var(--ink3);background:#f2f4f1;font-weight:400}
+.pg{margin-left:auto;font-size:10.5px;color:var(--ink3);font-variant-numeric:tabular-nums;white-space:nowrap}
+.name{font-size:12.5px;line-height:1.45;color:var(--ink);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.empty-search{padding:60px 0 90px;text-align:center;color:var(--ink2);font-size:14px}
+
+/* ---------- 门店 ---------- */
+.stores{margin-top:52px;padding:48px 0 56px;background:#eef4ea;border-top:1px solid var(--line)}
+.stores .sec-kicker::before{background:var(--accent)}
+.store-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-top:24px}
+.store-card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:22px 22px 24px}
+.store-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.store-badge{font-size:11px;font-weight:700;color:#fff;background:var(--brand);padding:3px 10px;border-radius:20px;letter-spacing:.06em}
+.store-no{font-size:20px;font-weight:700;color:#e4ebe2;font-variant-numeric:tabular-nums}
+.store-card h3{margin:0 0 16px;font-size:17px;font-weight:700}
+.store-info{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:11px}
+.store-info li{display:flex;gap:12px;font-size:13px;line-height:1.55}
+.store-info li span{flex:0 0 62px;color:var(--ink3);font-size:12px;padding-top:2px}
+.store-info li b{font-weight:500;color:var(--ink)}
+.store-info li b.ph{color:#a8813f;font-weight:400}
+.store-tip{background:#f7faf5;border-color:#dcead6;display:flex;flex-direction:column}
+.store-tip h3{margin-bottom:10px}
+.store-tip p{margin:0 0 10px;font-size:13px;line-height:1.85;color:var(--ink2)}
+.store-tip .tip{font-size:11.5px;color:var(--ink3);border-top:1px solid var(--line);padding-top:12px;margin-top:auto}
+.store-tip code{font-size:11px;background:#eaf2e7;padding:1px 5px;border-radius:4px}
+
+/* ---------- 页脚 / 返回顶部 ---------- */
+footer{padding:30px 0 36px;border-top:1px solid var(--line);background:#fff}
+.foot-inner{display:flex;justify-content:space-between;align-items:center;gap:28px;flex-wrap:wrap;font-size:12px;color:var(--ink3)}
+.foot-inner b{color:var(--ink2);font-weight:600}
+.foot-contact{display:flex;flex-direction:column;gap:7px;min-width:210px}
+.foot-contact .foot-name{font-size:15px;font-weight:700;color:var(--ink);letter-spacing:.04em}
+.foot-contact .foot-phone{font-size:13px;color:var(--ink2)}
+.foot-contact .foot-phone b{font-weight:500;color:#a8813f}
+.foot-contact .foot-meta{font-size:11.5px;color:var(--ink3)}
+.qr-row{display:flex;gap:18px;margin-right:56px}
+.qr-item{width:120px;text-align:center}
+.qr-box{width:120px;height:120px;border:1.5px dashed #c3d7ba;border-radius:10px;background:#f7faf5;display:flex;align-items:center;justify-content:center;text-align:center;font-size:12px;line-height:1.8;color:var(--ink2);padding:8px;overflow:hidden}
+.qr-box img{width:100%;height:100%;object-fit:contain;border-radius:6px}
+.qr-label{display:block;margin-top:7px;font-size:11.5px;color:var(--ink2)}
+#toTop{
+  position:fixed;right:24px;bottom:24px;z-index:55;width:46px;height:46px;border-radius:50%;
+  background:#fff;border:1px solid var(--line);box-shadow:var(--shadow);
+  display:flex;align-items:center;justify-content:center;color:var(--brand);
+  opacity:0;visibility:hidden;
+}
+#toTop.show{opacity:1;visibility:visible}
+#toTop:hover{background:var(--brand);color:#fff;border-color:var(--brand)}
+#toTop svg{width:19px;height:19px}
+
+/* ---------- 灯箱 ---------- */
+.lb{position:fixed;inset:0;z-index:90;background:rgba(18,28,22,.93);display:flex;align-items:center;justify-content:center;padding:56px 76px}
+.lb figure{margin:0;max-width:100%;max-height:100%;display:flex;flex-direction:column;align-items:center;gap:14px}
+.lb img{max-width:100%;max-height:calc(100vh - 150px);object-fit:contain;background:#fff;border-radius:4px;box-shadow:0 20px 60px rgba(0,0,0,.4)}
+.lb figcaption{color:rgba(255,255,255,.9);font-size:13px;text-align:center;line-height:1.7}
+.lb figcaption b{color:#fff;font-weight:600}
+.lb figcaption .lb-sub{display:block;font-size:11.5px;color:rgba(255,255,255,.55);letter-spacing:.04em}
+.lb-btn{position:absolute;display:flex;align-items:center;justify-content:center;color:#fff;border-radius:50%;background:rgba(255,255,255,.12)}
+.lb-btn:hover{background:rgba(255,255,255,.26)}
+.lb-close{top:18px;right:22px;width:38px;height:38px;font-size:24px;line-height:1}
+.lb-prev,.lb-next{top:50%;transform:translateY(-50%);width:44px;height:44px;font-size:26px}
+.lb-prev{left:18px}.lb-next{right:18px}
+.lb-counter{position:absolute;top:22px;left:24px;color:rgba(255,255,255,.65);font-size:12px;font-variant-numeric:tabular-nums}
+
+/* ---------- 响应式 ---------- */
+@media (max-width:1280px){
+  .grid{grid-template-columns:repeat(4,minmax(0,1fr))}
+}
+@media (max-width:1120px){
+  .bar-inner{display:flex;gap:12px}
+  .nav-toggle{display:inline-flex;order:3}
+  .today{margin-left:auto;order:2}
+  .nav{
+    order:4;position:absolute;top:var(--nav-h);left:0;right:0;justify-self:auto;
+    flex-direction:column;align-items:stretch;gap:0;background:#ffffff;
+    border-bottom:1px solid var(--line);box-shadow:0 12px 24px rgba(28,54,36,.12);
+    padding:0 24px;max-height:0;overflow:hidden;
+  }
+  .nav.open{max-height:440px;padding:10px 24px 16px;overflow-y:auto}
+  .nav a{border-radius:7px;padding:11px 12px;font-size:14px;border-bottom:1px solid var(--line2)}
+  .nav a:last-child{border-bottom:0}
+  .nav a.active::after{display:none}
+  .stats{min-width:0}
+}
+@media (max-width:980px){
+  .grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .intro-inner{flex-direction:column;align-items:flex-start;gap:22px;padding-top:32px;padding-bottom:28px}
+  .intro h1{font-size:27px}
+  .stats{width:100%}
+  .stat{flex:1;min-width:0}
+}
+@media (max-width:768px){
+  :root{--nav-h:58px;--tool-h:56px}
+  .wrap{padding:0 18px}
+  .brand-txt b{font-size:17px}
+  .brand-txt small{font-size:9.5px}
+  .brand svg{width:32px;height:32px}
+  .today .d-label{display:none}
+  .today .d-main{font-size:12px}
+  .today .d-week{font-size:10px}
+  .intro h1{font-size:24px}
+  .intro .lead{font-size:13px}
+  .stat b{font-size:20px}
+  .stat{padding:10px 12px}
+  .toolbar-inner{gap:10px}
+  .search{flex:1 1 auto;height:38px}
+  .result{font-size:11.5px}
+  .chips{display:none}
+  .grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}
+  .sec{padding:34px 0 6px}
+  .sec h2{font-size:20px}
+  .sec-count{margin-left:0}
+  .card .meta{padding:8px 9px 10px;min-height:60px}
+  .name{font-size:12px}
+  .store-grid{grid-template-columns:1fr}
+  .foot-inner{justify-content:center;text-align:center;gap:20px}
+  .foot-contact{align-items:center}
+  .qr-row{margin:0 auto}
+  .stores{padding:38px 0 42px;margin-top:38px}
+  .lb{padding:60px 16px 76px}
+  .lb img{max-height:calc(100vh - 190px)}
+  .lb-prev,.lb-next{width:38px;height:38px;font-size:22px;top:auto;bottom:16px;transform:none}
+  .lb-prev{left:calc(50% - 52px)}.lb-next{right:calc(50% - 52px)}
+  .lb-counter{top:18px;left:16px}
+  #toTop{right:14px;bottom:14px;width:42px;height:42px}
+}
+@media (max-width:420px){
+  .wrap{padding:0 14px}
+  .brand-txt small{display:none}
+  .today .d-week{display:none}
+  .today .d-main{font-size:11.5px}
+  .grid{gap:9px}
+  .foot-inner{gap:18px}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+}
+</style>
+</head>
+<body>
+
+<header class="topbar" id="top">
+  <div class="wrap bar-inner">
+    <a class="brand" href="#top" aria-label="赋新户外 返回顶部">
+      <svg viewBox="0 0 40 40" width="38" height="38" aria-hidden="true">
+        <circle cx="29" cy="11" r="4.4" fill="#d8a44f"/>
+        <path d="M2 30 14 13l7 10 5-6 12 13z" fill="#2f5d46"/>
+        <path d="M14 13l7 10-4.5-1.8z" fill="#7ea86a"/>
+        <path d="M3 33.5h34" stroke="#2f5d46" stroke-width="2.4" stroke-linecap="round"/>
+      </svg>
+      <span class="brand-txt"><b>赋新户外</b><small>FUXIN HUWAI · 户外服饰</small></span>
+    </a>
+    <button class="nav-toggle" id="navToggle" aria-label="展开分类导航" aria-expanded="false" aria-controls="nav"><span></span></button>
+    <nav class="nav" id="nav" aria-label="季节分类导航">
+      <a href="#autumn">春秋厚款</a>
+      <a href="#summer">夏季薄款</a>
+      <a href="#stores">门店信息</a>
+    </nav>
+    <div class="today" id="today" aria-label="当日日期"></div>
+  </div>
+</header>
+
+<main>
+  <section class="intro">
+    <div class="wrap intro-inner">
+      <div>
+        <p class="eyebrow">FUXIN HUWAI · 2026 系列</p>
+        <h1>赋新户外</h1>
+        <p class="lead lead-contact">店面地址：<b class="ph">待填写：省 / 市 / 区 / 街道门牌</b>　·　联系方式：<b class="ph">待填写：手机号 / 微信</b></p>
+      </div>
+      <div class="stats">
+        <div class="stat"><b>141</b><span>款式图片</span></div>
+        <div class="stat"><b>87</b><span>春秋厚款</span></div>
+        <div class="stat"><b>54</b><span>夏季薄款</span></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="toolbar">
+    <div class="wrap toolbar-inner">
+      <label class="search">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.6-3.6"/></svg>
+        <input id="q" type="search" autocomplete="off" placeholder="搜索款号 / 品类 / 花色 / 编号，如 1910、束脚、军绿、春001" aria-label="搜索款式">
+        <button class="clear" id="clear" type="button" hidden>清除</button>
+      </label>
+      <span class="result" id="result" aria-live="polite"></span>
+      <div class="chips" id="chips">
+        <span class="chip-label">快捷</span>
+        <button type="button" data-q="">全部</button>
+        <button type="button" data-q="军绿">军绿</button>
+        <button type="button" data-q="黄花">黄花</button>
+        <button type="button" data-q="束脚">束脚</button>
+        <button type="button" data-q="速干">速干</button>
+        <button type="button" data-q="模特">模特</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="gallery" class="wrap"></div>
+  <div class="wrap"><p class="empty-search" id="empty" hidden>没有匹配的款式，试试款号（如 1910）或花色（如 军绿）。</p></div>
+
+  <!-- ============ 门店信息：请替换为真实资料 ============ -->
+  <section class="stores sec" id="stores">
+    <div class="wrap">
+      <div class="sec-head">
+        <div class="sec-kicker">VISIT OUR STORE</div>
+        <div class="sec-title-row"><h2>线下门店</h2><span class="sec-range">到店看样 · 试穿比对</span></div>
+        <p class="sec-note">网站仅作款式展示，不提供线上下单。</p>
+      </div>
+      <div class="store-grid">
+        <article class="store-card">
+          <div class="store-top"><span class="store-badge">门店</span><span class="store-no">01</span></div>
+          <h3>赋新户外 · 线下门店</h3>
+          <ul class="store-info">
+            <li><span>店面地址</span><b class="ph">待填写：省 / 市 / 区 / 街道门牌</b></li>
+            <li><span>联系电话</span><b class="ph">待填写</b></li>
+            <li><span>营业时间</span><b>周一至周日 09:00 – 18:30</b></li>
+            <li><span>经营范围</span><b>春秋厚款 / 夏季薄款 / 迷彩工装系列</b></li>
+          </ul>
+        </article>
+        <article class="store-card store-tip">
+          <h3>到店看样</h3>
+          <p>面料厚薄、弹力与花色在不同屏幕上会有色差，建议到店实物比对。同一款号常有军绿、黄花、灰花、绿森林等多种花色，可直接按花色挑选。</p>
+          <p class="tip">地址、电话、手机号与二维码均为预留位置，请在本页 <code>#stores</code> 与页脚填入真实资料后上线。</p>
+        </article>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap foot-inner">
+    <div class="foot-contact">
+      <span class="foot-name">赋新户外</span>
+      <span class="foot-phone">手机号：<b class="ph">待填写</b></span>
+      <span class="foot-meta">户外服饰款式展示　|　图片仅供参考，以实物为准　|　春秋厚款 001 – 087　·　夏季薄款 001 – 054</span>
+    </div>
+    <!-- 二维码图片位：把 .qr-box 内的提示文字替换成 img 标签即可，例如 <img src="images/qr-wechat.png" alt="微信二维码"> -->
+    <div class="qr-row">
+      <div class="qr-item">
+        <div class="qr-box">微信二维码<br>图片待放置</div>
+        <span class="qr-label">微信二维码</span>
+      </div>
+      <div class="qr-item">
+        <div class="qr-box">抖音二维码<br>图片待放置</div>
+        <span class="qr-label">抖音二维码</span>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<button id="toTop" type="button" aria-label="返回顶部" title="返回顶部">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+</button>
+
+<div class="lb" id="lb" hidden role="dialog" aria-modal="true" aria-label="款式大图">
+  <span class="lb-counter" id="lbCounter"></span>
+  <button class="lb-btn lb-close" id="lbClose" type="button" aria-label="关闭大图">&times;</button>
+  <button class="lb-btn lb-prev" id="lbPrev" type="button" aria-label="上一张">&#8249;</button>
+  <figure><img id="lbImg" alt=""><figcaption id="lbCap"></figcaption></figure>
+  <button class="lb-btn lb-next" id="lbNext" type="button" aria-label="下一张">&#8250;</button>
+</div>
+
+<noscript><div style="padding:24px;text-align:center;color:#5d6c62">本页款式图由少量脚本渲染，请开启 JavaScript 后浏览；门店信息不受影响。</div></noscript>
+
+<script>
+(function(){
+  'use strict';
+
+  /* 款式数据：季节分类 | 图片编号 | 款号 | 品名 | 花色
+     顺序编号：a=春秋厚款，s=夏季薄款，数字为展示序号。 */
+  const SECTIONS = [
+    {id:'autumn',label:'春秋厚款',season:'春秋厚款',range:'编号 001 – 087',
+     note:'依序展示弹力、纯棉、斜纹厚款套装，束脚 / 散口 / 六兜 / 直筒裤装，以及迷彩套装与上身实拍；同一款号的不同花色连续排列。'},
+    {id:'summer',label:'夏季薄款',season:'夏季薄款',range:'编号 001 – 054',
+     note:'依序展示速干套装、衬衣套装、单裤与薄料纯棉斜纹 / 短袖套装，包含多色可选与工艺细节页。'}
+  ];
+
+  const RAW = `
+autumn|a001|2860|春秋弹力棉套装|军绿
+autumn|a002|2862|春秋弹力棉套装|黄花迷彩
+autumn|a003|2863|春秋弹力棉套装|黑花迷彩
+autumn|a004|2813|春秋弹力网格套装|军绿
+autumn|a005|2815|春秋弹力网格套装|黄花迷彩
+autumn|a006|2817|春秋弹力网格套装|灰花迷彩
+autumn|a007|2760|春秋弹力斜纹套装|军绿
+autumn|a008|2762|春秋弹力斜纹套装|黄花迷彩
+autumn|a009|2763|春秋弹力斜纹套装|灰花迷彩
+autumn|a010|2713|春秋网格弹力套装|军绿
+autumn|a011|2716|春秋网格弹力套装|黄花迷彩
+autumn|a012|2717|春秋网格弹力套装|灰花迷彩
+autumn|a013|8313|春秋厚弹力网格布|灰花迷彩 防泼水
+autumn|a014|8316|春秋厚弹力网格布|黄花迷彩 防泼水
+autumn|a015|8317|春秋厚弹力网格布|黑花迷彩 防泼水
+autumn|a016|8872|春秋款弹力套装|黄花迷彩
+autumn|a017|8873|春秋厚款弹力套装|黑花 可穿
+autumn|a018|8877|厚弹力加档套装|灰花迷彩
+autumn|a019|8850|军绿纯棉套装|军绿
+autumn|a020|8854|灰花套装|灰花迷彩
+autumn|a021|8857|纯棉弹力套装|绿标
+autumn|a022|8611|春秋弹力工装|黄花套装
+autumn|a023|8617|春秋弹力工装|绿花套装
+autumn|a024|852|纯棉舒适套装|军绿
+autumn|a025|852|春秋厚款弹力带大内兜|黄花迷彩
+autumn|a026|852|春秋厚款弹力带大内兜|黑花迷彩
+autumn|a027|8860|军绿套装|军绿
+autumn|a028|8862|黄花套装|黄花迷彩
+autumn|a029|8866|卡其套装|卡其迷彩
+autumn|a030|8867|春秋厚款弹力套装|灰花迷彩
+autumn|a031|8868|点点星空套装|黑花迷彩
+autumn|a032|8882|春秋厚款连帽弹力套装|黄花迷彩
+autumn|a033|8887|春秋厚款连帽弹力套装|灰花迷彩
+autumn|a034|8889|春秋厚款连帽弹力|咖色迷彩
+autumn|a035|8810|纯棉弹力套装|军绿
+autumn|a036|8811|纯棉弹力套装|黄花迷彩
+autumn|a037|8813|纯棉斜纹套装|灰花迷彩
+autumn|a038|9500|纯棉斜纹套装|模特实拍 黄花迷彩
+autumn|a039|9600|纯棉弹力套装|模特实拍 黄花迷彩
+autumn|a040|9700|纯棉弹力套装|模特实拍 灰花迷彩
+autumn|a041|8830|弹力散口套装|军绿
+autumn|a042|8833|弹力散口套装|灰花迷彩
+autumn|a043|8832|弹力散口套装|黄花迷彩
+autumn|a044|8820|军绿弹力内兜套装|军绿
+autumn|a045|6910|纯棉斜纹套装|军绿
+autumn|a046|6960|纯棉斜纹系扣套装|军绿
+autumn|a047|912|纯棉水洗13兜|军绿
+autumn|a048|361|防刮耐磨不褪色套装|军绿
+autumn|a049|102|防刮耐磨不褪色套装|军绿
+autumn|a050|1750|军绿束脚裤|军绿
+autumn|a051|1753|灰花束脚裤|灰花迷彩
+autumn|a052|1756|黄星花束脚裤|黄花迷彩
+autumn|a053|1757|绿森林束脚裤|绿森林迷彩
+autumn|a054|1720|军绿色散口裤|军绿
+autumn|a055|1723|灰花散口裤|灰花迷彩
+autumn|a056|1726|黄星花散口裤|黄花迷彩
+autumn|a057|1727|绿森林散口裤|绿森林迷彩
+autumn|a058||加裆设计 抗撕裂|工艺细节
+autumn|a059|1910|厚款六兜弹力束脚裤|军绿
+autumn|a060|1911|厚款六兜弹力束脚裤|绿花迷彩
+autumn|a061|1912|厚款六兜弹力束脚裤|黄花迷彩
+autumn|a062|1913|厚款六兜弹力束脚裤|黑花迷彩
+autumn|a063|1930|厚款六兜弹力散口裤|军绿
+autumn|a064|1932|厚款六兜弹力散口裤|黄花迷彩
+autumn|a065|1933|厚款六兜弹力散口裤|灰花迷彩
+autumn|a066|1900|厚弹力加档裤|军绿
+autumn|a067|1900|厚弹力加档裤|黄花迷彩
+autumn|a068|1906|厚弹力加档裤|黄花迷彩
+autumn|a069|1908|厚弹力加档裤|灰花迷彩
+autumn|a070||加宽加固裤裆|工艺细节
+autumn|a071|1920|春秋弹力加档直筒裤|军绿
+autumn|a072|1922|加档工装直筒裤|黄花迷彩
+autumn|a073|1923|加档工装直筒裤|灰花迷彩
+autumn|a074|1927|加档工装直筒裤|绿森林迷彩
+autumn|a075||加档设计 抗撕裂|工艺细节
+autumn|a076|1950|弹力加档缩脚裤|军绿
+autumn|a077|1952|加档工装缩脚裤|黄花迷彩
+autumn|a078|1953|加档工装缩脚裤|灰花迷彩
+autumn|a079|1957|加档工装缩脚裤|绿森林迷彩
+autumn|a080||通用迷彩套装|数码迷彩
+autumn|a081||09迷彩套装|09迷彩
+autumn|a082||荒漠迷彩套装|荒漠迷彩
+autumn|a083||上身实拍|09迷彩
+autumn|a084||上身实拍|黄花迷彩
+autumn|a085||上身实拍|绿森林迷彩
+autumn|a086||上身实拍|绿花迷彩
+autumn|a087||上身实拍|海洋迷彩
+summer|s001||速干套装防水透气|灰色
+summer|s002||速干套装防水透气|军绿
+summer|s003||速干套装防水透气|黑色
+summer|s004|2610|网格弹力衬衣套装|军绿
+summer|s005|2615|网格弹力衬衣套装|黄花迷彩
+summer|s006|2616|网格弹力衬衣套装|黄花迷彩
+summer|s007|2617|网格弹力衬衣套装|灰花迷彩
+summer|s008|2620|军绿套装|军绿
+summer|s009|2625|黄CP套装|黄CP迷彩
+summer|s010|2626|星空套装|星空迷彩
+summer|s011|2627|绿森林套装|绿森林迷彩
+summer|s012|1860|夏季薄款速干弹力裤|军绿
+summer|s013|1865|夏季薄款速干弹力裤|黄花迷彩
+summer|s014|1866|夏季薄款速干弹力裤|绿花迷彩
+summer|s015|1867|夏季薄款速干弹力裤|灰花迷彩
+summer|s016||多色可选更百搭|多色
+summer|s017|110|纯棉弹力衬衣套装 系扣款|军绿
+summer|s018|112|纯棉弹力衬衣套装 系扣款|黄花迷彩
+summer|s019|117|纯棉弹力衬衣套装 系扣款|绿森林迷彩
+summer|s020|210|薄款弹力衬衣套装 拉链款|军绿
+summer|s021|212|薄款弹力衬衣套装 拉链款|黄花迷彩
+summer|s022|217|薄款弹力衬衣套装 拉链款|绿森林迷彩
+summer|s023|740|纯棉弹力衬衣套装|军绿
+summer|s024|742|纯棉弹力衬衣套装|黄花迷彩
+summer|s025|743|纯棉弹力衬衣套装|灰花迷彩
+summer|s026||纯棉弹力 吸汗透气|迷彩
+summer|s027|1810|六兜弹力单裤|军绿
+summer|s028|1812|六兜弹力单裤|黄花迷彩
+summer|s029|1813|六兜弹力单裤|灰花迷彩
+summer|s030||迷彩工装裤细节|黄花迷彩
+summer|s031|1806|夏季薄款六兜加沿单裤|军绿
+summer|s032||迷彩面料细节|黄花迷彩
+summer|s033|1808|黑星花加裆单裤|黑星花
+summer|s034||加固裤裆 更耐穿|工艺细节
+summer|s035|1820|直筒裤 加档加固|军绿
+summer|s036|1822|直筒裤 夏季薄款|黄森林迷彩
+summer|s037|1827|直筒裤 夏季薄款|绿森林迷彩
+summer|s038||加档设计 抗撕裂|工艺细节
+summer|s039|1850|缩脚裤 加档加固|军绿
+summer|s040|1852|缩脚裤 夏季薄款|黄森林迷彩
+summer|s041|1857|缩脚裤 夏季薄款|绿森林迷彩
+summer|s042|1710|纯棉四兜束脚裤|军绿
+summer|s043|1711|纯棉四兜束脚裤|灰花迷彩
+summer|s044|1712|四兜纯棉束脚裤|绿森林迷彩
+summer|s045||夏季薄款短袖工作套装|军绿
+summer|s046|230|夏季薄款工作套装|军绿
+summer|s047|630|夏季薄款工作套装|军绿
+summer|s048|530|军绿纯棉薄套装|军绿
+summer|s049|560|蓝色纯棉薄套装|藏蓝
+summer|s050|532|绿花迷彩纯棉斜纹套装|绿花迷彩
+summer|s051|810|薄料纯棉斜纹套装|军绿
+summer|s052|811|薄料纯棉斜纹套装|黑白花
+summer|s053|812|薄料纯棉斜纹套装|黄花迷彩
+summer|s054|813|薄料纯棉斜纹套装|灰花迷彩
+`;
+
+  const SEASON_LABEL = {a:'春', s:'夏'};
+  const items = RAW.replace(/\r/g, '').trim().split('\n').map(function(line){
+    const f = line.split('|');
+    const id = f[1];
+    const season = id[0];
+    const page = parseInt(id.slice(1), 10);
+    return {g:f[0], id:id, code:f[2], name:f[3], color:f[4], season:season, page:page};
+  });
+  const byId = {};
+  items.forEach(function(it, i){ it.i = i; byId[it.id] = it; });
+
+  function esc(s){ return String(s).replace(/[&<>"']/g, function(c){
+    return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
+  }); }
+
+  /* 渲染静态结构 */
+  let html = '';
+  SECTIONS.forEach(function(sec){
+    const list = items.filter(function(it){ return it.g === sec.id; });
+    html += '<section class="sec" id="' + sec.id + '" data-sec="' + sec.id + '">'
+      + '<div class="sec-head">'
+      +   '<div class="sec-kicker">' + (sec.season === '春秋厚款' ? 'SECTION 01 / AUTUMN COLLECTION' : 'SECTION 02 / SUMMER COLLECTION') + '</div>'
+      +   '<div class="sec-title-row"><h2>' + esc(sec.label) + '</h2>'
+      +     '<span class="sec-range">' + esc(sec.range) + '</span>'
+      +     '<span class="sec-count"><b>' + list.length + '</b> 款</span></div>'
+      +   '<p class="sec-note">' + esc(sec.note) + '</p>'
+      + '</div><div class="grid">';
+
+    list.forEach(function(it, idx){
+      const pg = SEASON_LABEL[it.season] + ' · ' + String(it.page).padStart(3, '0');
+      const title = it.name + ' ' + it.color;
+      const key = (it.id + ' ' + String(it.page) + ' ' + it.id.slice(1)
+        + ' ' + SEASON_LABEL[it.season] + String(it.page).padStart(3,'0')
+        + ' ' + pg + ' ' + SEASON_LABEL[it.season]
+        + ' ' + it.code + ' ' + it.name + ' ' + it.color + ' ' + sec.label + ' ' + sec.season).toLowerCase();
+      const eager = idx < 4 && sec.id === 'autumn';
+      html += '<article class="card" data-i="' + it.i + '" data-k="' + esc(key) + '">'
+        + '<button class="media" type="button" data-open="' + it.i + '" aria-label="放大查看 ' + esc(title) + '">'
+        +   '<img src="images/thumbs/' + it.id + '.webp" alt="' + esc(title) + '" width="480" height="480"'
+        +     ' loading="' + (eager ? 'eager' : 'lazy') + '"' + (it.i === 0 ? ' fetchpriority="high"' : '')
+        +     ' decoding="async">'
+        + '</button>'
+        + '<div class="meta"><div class="meta-top">'
+        +   '<span class="code' + (it.code ? '' : ' none') + '">' + (it.code ? '款号 ' + esc(it.code) : '—') + '</span>'
+        +   '<span class="pg">' + esc(pg) + '</span></div>'
+        +   '<div class="name">' + esc(it.name) + (it.color ? ' · ' + esc(it.color) : '') + '</div>'
+        + '</div></article>';
+    });
+    html += '</div></section>';
+  });
+  document.getElementById('gallery').innerHTML = html;
+
+  /* 当日日期 */
+  (function(){
+    const d = new Date();
+    const wk = ['星期日','星期一','星期二','星期三','星期四','星期五','星期六'];
+    const p = function(n){ return String(n).padStart(2, '0'); };
+    document.getElementById('today').innerHTML =
+      '<span class="d-label">TODAY</span>'
+      + '<span class="d-main">' + d.getFullYear() + '年' + (d.getMonth()+1) + '月' + d.getDate() + '日</span>'
+      + '<span class="d-week">' + wk[d.getDay()] + ' · ' + p(d.getMonth()+1) + '/' + p(d.getDate()) + '</span>';
+  })();
+
+  /* 折叠导航 */
+  const nav = document.getElementById('nav');
+  const toggle = document.getElementById('navToggle');
+  function closeNav(){ nav.classList.remove('open'); toggle.setAttribute('aria-expanded','false'); toggle.setAttribute('aria-label','展开分类导航'); }
+  toggle.addEventListener('click', function(){
+    const open = nav.classList.toggle('open');
+    toggle.setAttribute('aria-expanded', String(open));
+    toggle.setAttribute('aria-label', open ? '收起分类导航' : '展开分类导航');
+  });
+  nav.addEventListener('click', function(e){ if (e.target.tagName === 'A') closeNav(); });
+  document.addEventListener('click', function(e){
+    if (!nav.contains(e.target) && !toggle.contains(e.target)) closeNav();
+  });
+
+  /* 搜索筛选 */
+  const q = document.getElementById('q');
+  const clearBtn = document.getElementById('clear');
+  const resultEl = document.getElementById('result');
+  const emptyEl = document.getElementById('empty');
+  const cards = Array.prototype.slice.call(document.querySelectorAll('.card'));
+  const secs = Array.prototype.slice.call(document.querySelectorAll('.sec[data-sec]'));
+  const chips = Array.prototype.slice.call(document.querySelectorAll('#chips button'));
+
+  function applyFilter(){
+    const key = q.value.trim().toLowerCase();
+    let n = 0;
+    for (let i=0; i<cards.length; i++){
+      const hit = !key || cards[i].dataset.k.indexOf(key) !== -1;
+      cards[i].hidden = !hit;
+      if (hit) n++;
+    }
+    secs.forEach(function(s){
+      const any = s.querySelector('.card:not([hidden])');
+      s.hidden = !any;
+    });
+    resultEl.textContent = key ? '找到 ' + n + ' 款' : '共 ' + cards.length + ' 款';
+    emptyEl.hidden = n !== 0;
+    clearBtn.hidden = !key;
+    chips.forEach(function(b){ b.classList.toggle('on', b.dataset.q === key); });
+  }
+  q.addEventListener('input', applyFilter);
+  clearBtn.addEventListener('click', function(){ q.value = ''; applyFilter(); q.focus(); });
+  chips.forEach(function(b){ b.addEventListener('click', function(){ q.value = b.dataset.q; applyFilter(); }); });
+  applyFilter();
+  /* 从筛选结果点击品类导航时，恢复全部分区，保证锚点可见 */
+  nav.addEventListener('click', function(e){
+    if (e.target.tagName === 'A' && q.value){ q.value = ''; applyFilter(); }
+  });
+
+  /* 灯箱 */
+  const lb = document.getElementById('lb');
+  const lbImg = document.getElementById('lbImg');
+  const lbCap = document.getElementById('lbCap');
+  const lbCounter = document.getElementById('lbCounter');
+  let lbList = [], lbPos = 0;
+
+  function visibleIndices(){
+    return cards.filter(function(c){ return !c.hidden; }).map(function(c){ return +c.dataset.i; });
+  }
+  function renderLb(){
+    const it = byId[items[lbList[lbPos]].id];
+    lbImg.src = 'images/large/' + it.id + '.webp';
+    lbImg.alt = it.name + ' ' + it.color;
+    lbCap.innerHTML = '<b>' + esc(it.name) + (it.code ? '　款号 ' + esc(it.code) : '') + '</b>'
+      + '<span class="lb-sub">' + esc(SEASON_LABEL[it.season] === '春' ? '春秋厚款' : '夏季薄款')
+      + ' · 编号 ' + String(it.page).padStart(3,'0') + (it.color ? ' · ' + esc(it.color) : '') + '</span>';
+    lbCounter.textContent = (lbPos + 1) + ' / ' + lbList.length;
+  }
+  function openLb(i){
+    lbList = visibleIndices();
+    lbPos = lbList.indexOf(i);
+    if (lbPos < 0) return;
+    renderLb();
+    lb.hidden = false;
+    document.body.style.overflow = 'hidden';
+    document.getElementById('lbClose').focus();
+  }
+  function closeLb(){
+    lb.hidden = true;
+    lbImg.removeAttribute('src');
+    document.body.style.overflow = '';
+  }
+  function step(d){
+    if (!lbList.length) return;
+    lbPos = (lbPos + d + lbList.length) % lbList.length;
+    renderLb();
+  }
+  document.getElementById('gallery').addEventListener('click', function(e){
+    const btn = e.target.closest('[data-open]');
+    if (btn) openLb(+btn.dataset.open);
+  });
+  document.getElementById('lbClose').addEventListener('click', closeLb);
+  document.getElementById('lbPrev').addEventListener('click', function(){ step(-1); });
+  document.getElementById('lbNext').addEventListener('click', function(){ step(1); });
+  lb.addEventListener('click', function(e){ if (e.target === lb || e.target.tagName === 'FIGURE') closeLb(); });
+  document.addEventListener('keydown', function(e){
+    if (lb.hidden) return;
+    if (e.key === 'Escape') closeLb();
+    else if (e.key === 'ArrowLeft') step(-1);
+    else if (e.key === 'ArrowRight') step(1);
+  });
+  let touchX = null;
+  lb.addEventListener('touchstart', function(e){ touchX = e.changedTouches[0].clientX; }, {passive:true});
+  lb.addEventListener('touchend', function(e){
+    if (touchX === null) return;
+    const dx = e.changedTouches[0].clientX - touchX;
+    if (Math.abs(dx) > 45) step(dx < 0 ? 1 : -1);
+    touchX = null;
+  }, {passive:true});
+
+  /* 返回顶部 + 当前分区高亮 */
+  const toTop = document.getElementById('toTop');
+  const navLinks = Array.prototype.slice.call(nav.querySelectorAll('a'));
+  const targets = [];
+  navLinks.forEach(function(a){
+    const el = document.getElementById(a.getAttribute('href').slice(1));
+    if (el) targets.push({a:a, el:el, top:0});
+  });
+  let navH = 68, ticking = false;
+  function measure(){
+    navH = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--nav-h'),10) || 68;
+    for (let i=0; i<targets.length; i++) targets[i].top = targets[i].el.offsetTop;
+  }
+  function onScroll(){
+    const y = window.pageYOffset || document.documentElement.scrollTop;
+    toTop.classList.toggle('show', y > 400);
+    const line = y + navH + 90;
+    let active = null;
+    for (let i=0; i<targets.length; i++){
+      if (targets[i].top <= line) active = targets[i].a;
+    }
+    navLinks.forEach(function(a){ a.classList.toggle('active', a === active); });
+    ticking = false;
+  }
+  window.addEventListener('scroll', function(){
+    if (!ticking){ ticking = true; window.requestAnimationFrame(onScroll); }
+  }, {passive:true});
+  window.addEventListener('resize', function(){ measure(); onScroll(); }, {passive:true});
+  toTop.addEventListener('click', function(){
+    window.scrollTo({top:0, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'});
+  });
+  measure();
+  onScroll();
+})();
+</script>
+</body>
+</html>
