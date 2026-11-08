@@ -388,9 +388,9 @@ footer{padding:30px 0 36px;border-top:1px solid var(--line);background:#fff}
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
 </button>
 
-<div class="lb" id="lb" hidden role="dialog" aria-modal="true" aria-label="款式大图">
+<div class="lb" id="lb" hidden role="dialog" aria-modal="true" aria-label="款式图片">
   <span class="lb-counter" id="lbCounter"></span>
-  <button class="lb-btn lb-close" id="lbClose" type="button" aria-label="关闭大图">&times;</button>
+  <button class="lb-btn lb-close" id="lbClose" type="button" aria-label="关闭图片">&times;</button>
   <button class="lb-btn lb-prev" id="lbPrev" type="button" aria-label="上一张">&#8249;</button>
   <figure><img id="lbImg" alt=""><figcaption id="lbCap"></figcaption></figure>
   <button class="lb-btn lb-next" id="lbNext" type="button" aria-label="下一张">&#8250;</button>
@@ -593,7 +593,7 @@ summer|s054|813|薄料纯棉斜纹套装|灰花迷彩
       const eager = idx < 4 && sec.id === 'autumn';
       html += '<article class="card" data-i="' + it.i + '" data-k="' + esc(key) + '">'
         + '<button class="media" type="button" data-open="' + it.i + '" aria-label="放大查看 ' + esc(title) + '">'
-        +   '<img src="images/thumbs/' + it.id + '.webp" alt="' + esc(title) + '" width="480" height="480"'
+        +   '<img src="images/' + it.id + '.webp" alt="' + esc(title) + '"'
         +     ' loading="' + (eager ? 'eager' : 'lazy') + '"' + (it.i === 0 ? ' fetchpriority="high"' : '')
         +     ' decoding="async">'
         + '</button>'
@@ -677,14 +677,24 @@ summer|s054|813|薄料纯棉斜纹套装|灰花迷彩
   function visibleIndices(){
     return cards.filter(function(c){ return !c.hidden; }).map(function(c){ return +c.dataset.i; });
   }
+  /* 单套图片：把左右相邻的网格图提前加载，翻页时可直接命中缓存 */
+  function prefetchNear(){
+    [-1, 1].forEach(function(d){
+      const j = lbPos + d;
+      if (j < 0 || j >= lbList.length) return;
+      const im = document.querySelector('.card[data-i="' + lbList[j] + '"] img');
+      if (im && im.loading === 'lazy') im.loading = 'eager';
+    });
+  }
   function renderLb(){
     const it = byId[items[lbList[lbPos]].id];
-    lbImg.src = 'images/large/' + it.id + '.webp';
+    lbImg.src = 'images/' + it.id + '.webp';
     lbImg.alt = it.name + ' ' + it.color;
     lbCap.innerHTML = '<b>' + esc(it.name) + (it.code ? '　款号 ' + esc(it.code) : '') + '</b>'
       + '<span class="lb-sub">' + esc(SEASON_LABEL[it.season] === '春' ? '春秋厚款' : '夏季薄款')
       + ' · 编号 ' + String(it.page).padStart(3,'0') + (it.color ? ' · ' + esc(it.color) : '') + '</span>';
     lbCounter.textContent = (lbPos + 1) + ' / ' + lbList.length;
+    prefetchNear();
   }
   function openLb(i){
     lbList = visibleIndices();
